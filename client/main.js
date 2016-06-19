@@ -6,7 +6,7 @@ import React from 'react';
 
 
 // Import React component from SearchPane
-import SearchPane from './components/SearchPane';
+import App from './components/App';
 
 // Render component to DOM!
-ReactDOM.render(<SearchPane />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));

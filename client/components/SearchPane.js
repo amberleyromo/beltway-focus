@@ -35,7 +35,7 @@ export default class SearchPane extends React.Component{
       .then((resp) => {
       	console.log('[SearchPane] new trendData: ', resp);
         this.setState({trendData: resp})
-        this.setState({lastSearch: resp})
+        this.setState({lastSearch: this.state.searchTerm})
       })
       .catch((resp) => {
         console.log("doSearch response fail", resp)
