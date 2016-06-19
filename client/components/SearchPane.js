@@ -70,7 +70,7 @@ export default class SearchPane extends React.Component{
 			          value={this.state.searchTerm}
 			          onInput={this.handleSearchInput.bind(this)}
 			        />
-			        <button onClick={this.doSearch.bind(this)}> Do Search</button>
+			        <button onClick={this.doSearch.bind(this)}>Search</button>
 			      </form>
 		    	</div>
 		    	</div>
@@ -79,6 +79,7 @@ export default class SearchPane extends React.Component{
 		    <div className='searchTermWrapper'>
 			    <div className='container'>
 		    		<div className='twelve columns'>
+		    			<p className='removeBottom'>Search the frequency of a word or phrase appearing in the Congressional Record.</p>
 		    			{ this.state.lastSearch.length > 0
 				            ? <p>Current search term: '{this.state.lastSearch}'</p>
 				            : null

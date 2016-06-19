@@ -471,7 +471,7 @@ h1 {
 
 p {
 	text-align: center;
-	padding-top: 20px;
+	padding-top: 15px;
 }
 
 form {
@@ -481,6 +481,10 @@ form {
 
 input, button {
 	margin-right: 20px;
+}
+
+.removeBottom {
+	margin-bottom: 0;
 }
 
 
