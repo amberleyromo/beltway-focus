@@ -4,11 +4,14 @@ import d3 from 'd3';
 
 export default class Visual extends React.Component{
 
-  render() {
+  createChart(){
 
+    /*
+      define dimensions
+    */
     var margin = {top: 20, right: 20, bottom: 70, left: 40},
-    width = 600 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    width = 900 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
     var y = d3.scale.linear().range([height, 0]);
@@ -16,11 +19,16 @@ export default class Visual extends React.Component{
     var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom")
+      .ticks(Math.max(width/50, 2));
 
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
+      .ticks(Math.max(height/50, 2));
 
+    /*
+      create chart
+    */
     var chart = d3.select(ReactFauxDOM.createElement('svg'))
       .attr('width', width + margin.right + margin.left)
       .attr('height', height + margin.top + margin.bottom)
@@ -29,6 +37,9 @@ export default class Visual extends React.Component{
     x.domain(this.props.data.map(function(d) { return d.year; }));
     y.domain([0, d3.max(this.props.data, function(d) { return d.count; })]);
 
+    /*
+      xAxis
+    */
     chart.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -39,6 +50,9 @@ export default class Visual extends React.Component{
       .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
 
+    /*
+      yAxis
+    */
     chart.append("g")
         .attr("class", "y axis")
         .call(yAxis)
@@ -49,6 +63,9 @@ export default class Visual extends React.Component{
         .style("text-anchor", "end")
         .text("# of mentions");
 
+    /*
+      bars
+    */
     chart.selectAll("bar")
         .data(this.props.data)
       .enter().append("rect")
@@ -58,6 +75,11 @@ export default class Visual extends React.Component{
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return height - y(d.count); });
 
+    return chart;
+  }
+
+  render() {
+    var chart = this.createChart()
     return chart.node().toReact();
   }
 }

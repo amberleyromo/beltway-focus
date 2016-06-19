@@ -11,19 +11,18 @@ export default class SearchPane extends React.Component{
     this.state = {
     	searchTerm: '',
     	trendData: [],
-    	domain: {
-    		x: [0, 30], y: [0, 100]
-    	},
+    	lastSearch: '',
     	error: null
     };
   }
 
   componentDidMount(){
   	// start with a sample search
-  	fetchData('feminism')
+  	fetchData('oil')
 	    .then((data) => {
 	      // every time we call setState(), component will rerender
 	      this.setState({trendData: data})
+	      this.setState({lastSearch: 'oil'})
 	    })
 
   }
@@ -36,6 +35,7 @@ export default class SearchPane extends React.Component{
       .then((resp) => {
       	console.log('[SearchPane] new trendData: ', resp);
         this.setState({trendData: resp})
+        this.setState({lastSearch: resp})
       })
       .catch((resp) => {
         console.log("doSearch response fail", resp)
@@ -50,33 +50,50 @@ export default class SearchPane extends React.Component{
 
   render(){
     return (
-		<div className='wrapper'>
-			<div className='search'>
+		<div className='mainWrapper'>
+			<div className='searchWrapper'>
+				<div className='container'>
+				<div className='six columns'>
 				 { this.state.error !== null
 			        ? <div className='error'> {this.state.error.error + ": " + this.state.error.reason} </div>
 			        : null
 			      }
 
-			      <form onSubmit={function(e){ e.preventDefault() }}>
+			      <h1>Beltway Focus</h1>
+			    </div>
 
+			    <div className='six columns'>
+			      <form onSubmit={function(e){ e.preventDefault() }}>
 			        <input
 			          type="text"
 			          name="searchTerm"
 			          value={this.state.searchTerm}
 			          onInput={this.handleSearchInput.bind(this)}
 			        />
-
+			        <button onClick={this.doSearch.bind(this)}> Do Search</button>
 			      </form>
-			      
-			      <button onClick={this.doSearch.bind(this)}> Do Search</button>
-			   
+		    	</div>
+		    	</div>
 		    </div>
 
-		    { this.state.trendData.length > 0
-	            ? <Visual data={this.state.trendData} />
-	            : null
-	          }
+		    <div className='searchTermWrapper'>
+			    <div className='container'>
+		    		<div className='twelve columns'>
+		    			{ this.state.lastSearch.length > 0
+				            ? <p>Current search term: '{this.state.lastSearch}'</p>
+				            : null
+				        }
 
+		    		</div>
+		    	</div>
+	    	</div>
+
+		    <div className='chartWrapper'>
+			    { this.state.trendData.length > 0
+		            ? <Visual data={this.state.trendData} />
+		            : null
+		        }
+	       	</div>   	
 		</div>
     );
   }
