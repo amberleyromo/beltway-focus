@@ -11,13 +11,16 @@ export default class SearchPane extends React.Component{
     this.state = {
     	searchTerm: '',
     	trendData: [],
+    	domain: {
+    		x: [0, 30], y: [0, 100]
+    	},
     	error: null
     };
   }
 
   componentDidMount(){
   	// start with a sample search
-  	fetchData('oil')
+  	fetchData('feminism')
 	    .then((data) => {
 	      // every time we call setState(), component will rerender
 	      this.setState({trendData: data})
@@ -26,14 +29,16 @@ export default class SearchPane extends React.Component{
   }
 
   doSearch(){
+  	console.log('[SearchPane] new search term: ', this.state.searchTerm)
     this.setState({error: null});
 
     fetchData(this.state.searchTerm)
       .then((resp) => {
+      	console.log('[SearchPane] new trendData: ', resp);
         this.setState({trendData: resp})
       })
       .catch((resp) => {
-        console.log("response fail", resp)
+        console.log("doSearch response fail", resp)
         this.setState({error: resp});
       })
   }
@@ -67,7 +72,11 @@ export default class SearchPane extends React.Component{
 			   
 		    </div>
 
-		    <Visual data={this.state.trendData} />
+		    { this.state.trendData.length > 0
+	            ? <Visual data={this.state.trendData} />
+	            : null
+	          }
+
 		</div>
     );
   }
